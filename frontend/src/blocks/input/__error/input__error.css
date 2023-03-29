@@ -1,0 +1,9 @@
+.input__error {
+  color: #f00;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  border-top: 1px solid white;
+  padding-top: 5px;
+}

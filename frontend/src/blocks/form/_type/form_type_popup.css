@@ -1,0 +1,12 @@
+.form_type_popup {
+  color: black;
+  position: relative;
+  cursor: default;
+  max-width: 430px;
+  min-width: 282px;
+  width: 90%;
+  min-height: 330px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10px;
+}

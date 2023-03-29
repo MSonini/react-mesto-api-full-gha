@@ -1,0 +1,15 @@
+.card__like-button {
+    border-radius: 2px;
+    padding: 0;
+    border: 0;
+    width: 22px;
+    min-height: 19px;
+    background-image: url(../../../images/buttons/like.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #FFF;
+    -ms-flex-item-align: center;
+        -ms-grid-row-align: center;
+        align-self: center;
+}
