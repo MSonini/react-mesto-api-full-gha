@@ -1,3 +1,5 @@
+const { CORS } = process.env;
+
 module.exports.STATUS_CODES = {
   badRequestError: 400,
   authError: 401,
@@ -13,4 +15,6 @@ module.exports.DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
 module.exports.ALLOWED_CORS = [
   'localhost:3000',
   'localhost:3001',
+  CORS,
+  'ms-frontend-study.nomoredomains.work',
 ];
