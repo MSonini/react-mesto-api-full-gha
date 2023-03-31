@@ -1,10 +1,13 @@
 const jwt = require('jsonwebtoken');
 const AuthError = require('../errors/auth-error');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports = (req, res, next) => {
   try {
     const authorization = req.cookies.jwt || req.headers.authorization;
     if (!authorization) {
+      // next(new AuthError('Authorization error (no auth token/header)'));
       next(new AuthError('Authorization error'));
       return;
     }
@@ -12,8 +15,9 @@ module.exports = (req, res, next) => {
     const token = authorization.replace('Bearer ', '');
     let _id;
 
-    jwt.verify(token, 'some-secret-key', (err, decoded) => {
+    jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', (err, decoded) => {
       if (err) {
+        // next(new AuthError('Authorization error (jwt verification error)'));
         next(new AuthError('Authorization error'));
         return;
       }
