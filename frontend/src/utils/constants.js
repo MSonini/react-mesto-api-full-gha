@@ -4,6 +4,7 @@ const AUTH_BASE_URL = 'ms-backend-study.nomoredomains.work'
 const AUTH_KEY = ''
 // const BASE_API_URL = 'http://localhost:3001'
 // const AUTH_BASE_URL = 'http://localhost:3001'
+//
 
 const PAGES = {
   login: '/sign-in',
