@@ -8,7 +8,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.14.89
+IP 158.160.14.89
 
 Frontend https://ms-frontend-study.nomoredomains.work
 
