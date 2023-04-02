@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 const errorHandler = require('./middlewares/errorHandler');
-const router = require('./routes/index');
+const { authRouter, cardsRouter, usersRouter } = require('./routes/index');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/not-found-error');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -27,12 +27,12 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.use('/', router.authRouter);
+app.use('/', authRouter);
 
 app.use(auth);
 
-app.use('/users', router.usersRouter);
-app.use('/cards', router.cardsRouter);
+app.use('/users', usersRouter);
+app.use('/cards', cardsRouter);
 
 app.use((req, res, next) => {
   next(new NotFoundError('Page not found'));
