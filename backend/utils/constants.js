@@ -18,3 +18,5 @@ module.exports.ALLOWED_CORS = [
   CORS,
   'ms-frontend-study.nomoredomains.work',
 ];
+
+module.exports.DEV_JWT_SECRET = require('crypto').randomBytes(32).toString('hex');

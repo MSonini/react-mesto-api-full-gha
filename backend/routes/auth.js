@@ -4,22 +4,22 @@ const {
   login,
   createUser,
 } = require('../controllers/users');
-const { URL_REGEX } = require('../utils/constants');
+const { validators } = require('../validators/validators');
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
+    email: validators.email.required(),
+    password: validators.password.required(),
   }),
 }), login);
 
 router.post('/signup', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required(),
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(URL_REGEX),
+    email: validators.email.required(),
+    password: validators.password.required(),
+    name: validators.name,
+    about: validators.about,
+    avatar: validators.avatar,
   }),
 }), createUser);
 

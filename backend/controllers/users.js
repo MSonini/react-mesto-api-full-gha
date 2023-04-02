@@ -5,6 +5,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 const ConflictError = require('../errors/conflict-error');
 const BadRequestError = require('../errors/bad-request-error');
+const { DEV_JWT_SECRET } = require('../utils/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -21,7 +22,8 @@ module.exports.getUser = (req, res, next) => {
         throw new NotFoundError('User not found');
       }
       res.send({ data: user });
-    }).catch((error) => {
+    })
+    .catch((error) => {
       if (error instanceof mongoose.Error.CastError) {
         next(new BadRequestError('Invalid user id'));
       } else {
@@ -37,7 +39,8 @@ module.exports.getCurrentUser = (req, res, next) => {
         throw new NotFoundError('Object Not Found');
       }
       res.send({ data: user });
-    }).catch(next);
+    })
+    .catch(next);
 };
 
 module.exports.profileUpdate = (req, res, next) => {
@@ -53,10 +56,15 @@ module.exports.profileUpdate = (req, res, next) => {
       }
       res.send({
         data: {
-          _id: user._id, email: user.email, name: user.name, about: user.about, avatar: user.avatar,
+          _id: user._id,
+          email: user.email,
+          name: user.name,
+          about: user.about,
+          avatar: user.avatar,
         },
       });
-    }).catch((err) => {
+    })
+    .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         next(new BadRequestError('Parameters error'));
       } else {
@@ -78,7 +86,11 @@ module.exports.profileAvatarUpdate = (req, res, next) => {
       }
       res.send({
         data: {
-          _id: user._id, email: user.email, name: user.name, about: user.about, avatar: user.avatar,
+          _id: user._id,
+          email: user.email,
+          name: user.name,
+          about: user.about,
+          avatar: user.avatar,
         },
       });
     })
@@ -96,7 +108,8 @@ module.exports.createUser = async (req, res, next) => {
     name, about, avatar, password, email,
   } = req.body;
 
-  bcrypt.hash(password, 10)
+  bcrypt
+    .hash(password, 10)
     .then((hash) => User.create({
       name,
       about,
@@ -106,7 +119,11 @@ module.exports.createUser = async (req, res, next) => {
     }))
     .then((user) => res.send({
       data: {
-        _id: user._id, email: user.email, name: user.name, about: user.about, avatar: user.avatar,
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
       },
     }))
     .catch((error) => {
@@ -121,18 +138,20 @@ module.exports.createUser = async (req, res, next) => {
 };
 
 module.exports.login = (req, res, next) => {
-  const {
-    password, email,
-  } = req.body;
-  User.findUserByCredentials(email, password).then((user) => {
-    const token = jwt.sign(
-      { _id: user._id },
-      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
-      { expiresIn: '7d' },
-    );
-    res.cookie('jwt', token, {
-      maxAge: 3600000,
-      // httpOnly: true,
-    }).send({ email, password });
-  }).catch(next);
+  const { password, email } = req.body;
+  User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : DEV_JWT_SECRET,
+        { expiresIn: '7d' },
+      );
+      res
+        .cookie('jwt', token, {
+          maxAge: 3600000,
+          // httpOnly: true,
+        })
+        .send({ email });
+    })
+    .catch(next);
 };
